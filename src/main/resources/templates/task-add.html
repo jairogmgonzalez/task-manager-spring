@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Nueva Tarea - TaskBoard</title>
+    <link th:href="@{/css/task-add.css}" rel="stylesheet">
+</head>
+<body>
+<div class="create-task-container">
+    <div class="form-header">
+        <h2>Crear Nueva Tarea</h2>
+        <a th:href="@{/boards/{boardId}(boardId=${boardId})}" class="back-link">← Volver</a>
+    </div>
+
+    <form th:action="@{/tasks/{boardId}/{categoryId}/add(boardId=${boardId}, categoryId=${categoryId})}" method="POST" th:object="${task}">
+
+        <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+        <div class="form-group">
+            <label for="name">Nombre de la tarea *</label>
+            <input type="text" id="name" th:field="*{name}"
+                   required placeholder="Ej: Implementar función login">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" th:field="*{description}"
+                      placeholder="Añade una descripción de la tarea..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Estado *</label>
+            <select id="status" th:field="*{status}" required>
+                <option value="PENDING">Pendiente</option>
+                <option value="IN_PROGRESS">En progreso</option>
+                <option value="COMPLETED">Completada</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="priority">Prioridad *</label>
+            <select id="priority" th:field="*{priority}" required>
+                <option value="LOW">Baja</option>
+                <option value="MEDIUM">Media</option>
+                <option value="HIGH">Alta</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="dueDate">Fecha de entrega</label>
+            <input type="datetime-local" id="dueDate" th:field="*{dueDate}">
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="primary-button">
+                Crear Tarea
+            </button>
+            <a th:href="@{/boards/{boardId}(boardId=${boardId})}" class="secondary-button">
+                Cancelar
+            </a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

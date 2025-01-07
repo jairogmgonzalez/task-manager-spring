@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Tarea - TaskBoard</title>
+  <link th:href="@{/css/task-update.css}" rel="stylesheet">
+</head>
+<body>
+
+<header>
+  <h1>ACTUALIZAR TAREA</h1>
+  <nav class="header-nav">
+    <a th:href="@{/boards/{boardId}(boardId=${boardId})}" class="button">Volver atrás</a>
+  </nav>
+</header>
+
+<main class="task-container">
+  <div class="task-header">
+    <h2 th:text="${task.name}">Nombre de la Tarea</h2>
+    <span th:class="'status-badge status-' + ${task.status.toString().toLowerCase()}"
+          th:text="${task.status.toString().toLowerCase()}">Estado</span>
+  </div>
+
+  <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+  <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+  <form th:action="@{/tasks/{boardId}/{categoryId}/update/{taskId}(boardId=${boardId}, categoryId=${categoryId}, taskId=${task.id})}"
+        method="POST"
+        class="task-form">
+
+    <div class="form-group">
+      <label for="name">Nombre</label>
+      <input type="text" id="name" name="name" th:value="${task.name}" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descripción</label>
+      <textarea id="description" name="description" th:text="${task.description}"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="status">Estado</label>
+      <select id="status" name="status" required>
+        <option value="PENDING" th:selected="${task.status.name() == 'PENDING'}">Pendiente</option>
+        <option value="IN_PROGRESS" th:selected="${task.status.name() == 'IN_PROGRESS'}">En progreso</option>
+        <option value="COMPLETED" th:selected="${task.status.name() == 'COMPLETED'}">Completada</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Prioridad</label>
+      <select id="priority" name="priority" required>
+        <option value="LOW" th:selected="${task.priority.name() == 'LOW'}">Baja</option>
+        <option value="MEDIUM" th:selected="${task.priority.name() == 'MEDIUM'}">Media</option>
+        <option value="HIGH" th:selected="${task.priority.name() == 'HIGH'}">Alta</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="dueDate">Fecha de entrega</label>
+      <input type="datetime-local" id="dueDate" name="dueDate"
+             th:value="${#temporals.format(task.dueDate, 'yyyy-MM-dd''T''HH:mm')}">
+    </div>
+
+    <div class="button-group">
+      <button type="submit" class="button primary-button">
+        Guardar cambios
+      </button>
+      <a th:href="@{/tasks/{boardId}/delete/{taskId}(boardId=${boardId}, taskId=${task.id})}"
+         class="button-delete">Eliminar</a>
+    </div>
+  </form>
+</main>
+
+</body>
+</html>

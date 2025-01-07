@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles Tablero - Taskboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link th:href="@{/css/board.css}" rel="stylesheet">
+</head>
+<body>
+<header>
+    <h1 th:text="${board.name.toUpperCase()}">TABLERO</h1>
+    <nav class="header-nav">
+        <a href="/" class="button">Volver atrás</a>
+    </nav>
+</header>
+
+<main>
+    <section class="categories-section">
+        <h2>Categorías</h2>
+
+        <div th:if="${#maps.isEmpty(categoryTaskMap)}" class="empty-categories">
+            <p>Aún no tienes categorías. <a th:href="@{/categories/{boardId}/add(boardId=${board.id})}">¡Crea una para
+                empezar!</a></p>
+        </div>
+
+        <div th:unless="${#maps.isEmpty(categoryTaskMap)}" class="categories-container">
+            <div th:each="category : ${categoryTaskMap.keySet()}" class="category-card">
+                <div class="category-content">
+                    <h3 class="category-title" th:text="${category.name}">Categoría 1</h3>
+                    <a th:href="@{/categories/{boardId}/update/{categoryId}(boardId=${board.id}, categoryId=${category.id})}"
+                       class="button">Opciones</a>
+                </div>
+
+                <div class="tasks-container">
+                    <div th:each="task : ${categoryTaskMap.get(category)}"
+                         th:class="'task-card status-' + ${task.status.toString().toLowerCase()}">
+                        <div class="task-header">
+                            <h4 class="task-title" th:text="${task.name}">Tarea</h4>
+                            <a th:href="@{/tasks/{boardId}/{categoryId}/update/{taskId}(boardId=${board.id}, categoryId=${category.id}, taskId=${task.id})}" class="task-update">
+                                <i class="fas fa-pencil"></i>
+                            </a>
+                        </div>
+                        <div class="task-metadata">
+                            <span th:class="'task-badge badge-status-' + ${task.status.toString().toLowerCase()}"
+                                  th:text="${task.status.toString().toLowerCase()}">Estado</span>
+                            <span th:class="'task-badge badge-priority-' + ${task.priority.toString().toLowerCase()}"
+                                  th:text="${task.priority.toString().toLowerCase()}">Prioridad</span>
+                            <span class="task-due-date"
+                                  th:text="${#temporals.format(task.dueDate, 'dd/MM HH:mm')}">Hora de entrega</span>
+                        </div>
+                    </div>
+
+                    <div class="tasks-divider"></div>
+
+                    <a th:href="@{/tasks/{boardId}/{categoryId}/add(boardId=${board.id}, categoryId=${category.id})}"
+                       class="add-task-button">
+                        <i class="fas fa-plus"></i>
+                        <span>Añadir nueva tarea</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="category-card new-category">
+                <div class="add-category-content">
+                    <span class="plus-icon">+</span>
+                    <p>Crear nueva categoría</p>
+                </div>
+                <a th:href="@{/categories/{boardId}/add(boardId=${board.id})}" class="category-card-link"></a>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

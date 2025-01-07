@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>TaskBoard Proyecto</title>
+    <link th:href="@{/css/home.css}" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <h1 th:text="'BIENVENIDO ' + ${user.username.toUpperCase()}"></h1>
+    <nav class="header-nav">
+        <a th:href="@{/user/{id}(id=${user.id})}" class="button">Mi Perfil</a>
+    </nav>
+</header>
+
+<main>
+    <section class="boards-section">
+        <h2>Mis tableros</h2>
+
+        <div th:if="${#lists.isEmpty(boards)}" class="empty-boards">
+            <p>Aún no tienes tableros. <a href="/boards/add">¡Crea uno para empezar!</a> </p>
+        </div>
+
+        <div th:unless="${#lists.isEmpty(boards)}" class="boards-container">
+            <div th:each="board : ${boards}" class="board-card">
+                <div class="board-content">
+                    <h3 class="board-title" th:text="${board.name}">Tablero 1</h3>
+                    <p class="board-description" th:text="${board.description}">Descripción del tablero</p>
+                </div>
+                <div class="board-actions">
+                    <a th:href="@{/boards/{boardId}/update(boardId=${board.id})}" class="button">Opciones</a>
+                    <a th:href="@{/boards/{boardId}(boardId=${board.id})}" class="button">Ver Tablero</a>
+                </div>
+            </div>
+
+            <div class="board-card new-board">
+                <div class="add-board-content">
+                    <span class="plus-icon">+</span>
+                    <p>Crear nuevo tablero</p>
+                </div>
+                <a href="/boards/add" class="board-card-link"></a>
+            </div>
+        </div>
+    </section>
+</main>
+
+</body>
+</html>

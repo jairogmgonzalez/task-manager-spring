@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Nuevo Tablero - TaskBoard</title>
+    <link th:href="@{/css/board-add.css}" rel="stylesheet">
+</head>
+<body>
+<div class="create-board-container">
+    <div class="form-header">
+        <h2>Crear Nuevo Tablero</h2>
+        <a href="/" class="back-link">← Volver</a>
+    </div>
+
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+    <form th:action="@{/boards/add}" method="POST">
+        <div class="form-group">
+            <label for="name">Nombre del tablero *</label>
+            <input type="text" id="name" name="name" required
+                   placeholder="Ej: Proyecto DAM">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" name="description"
+                      placeholder="Añade una descripción del tablero..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="primary-button">
+                Crear Tablero
+            </button>
+            <a href="/" class="secondary-button">
+                Cancelar
+            </a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

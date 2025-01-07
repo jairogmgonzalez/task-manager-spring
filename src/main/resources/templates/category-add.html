@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Crear Nueva Categoría - TaskBoard</title>
+    <link th:href="@{/css/category-add.css}" rel="stylesheet">
+</head>
+<body>
+<div class="create-category-container">
+    <div class="form-header">
+        <h2>Crear Nueva Categoría</h2>
+        <a href="/" class="back-link">← Volver</a>
+    </div>
+
+    <div th:if="${error}" class="error-message" th:text="${error}"></div>
+
+    <form th:action="@{/categories/{boardId}/add(boardId=${board.id})}" method="POST">
+        <div class="form-group">
+            <label for="name">Nombre de la categoría *</label>
+            <input type="text" id="name" name="name" required
+                   placeholder="Ej: Unidad 1">
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" name="description"
+                      placeholder="Añade una descripción de la categoría..."></textarea>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="primary-button">
+                Crear Categoría
+            </button>
+            <a th:href="@{/boards/{boardId}(boardId=${board.id})}" class="secondary-button">
+                Cancelar
+            </a>
+        </div>
+    </form>
+
+</div>
+</body>
+</html>

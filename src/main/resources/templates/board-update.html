@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tablero - TaskBoard</title>
+    <link th:href="@{/css/board-update.css}" rel="stylesheet">
+</head>
+<body>
+
+<header>
+    <h1>ACTUALIZAR TABLERO</h1>
+    <nav class="header-nav">
+        <a href="/" class="button">Volver atrás</a>
+    </nav>
+</header>
+
+<main class="board-container">
+    <div class="board-header">
+        <h2 th:text="${board.name.toUpperCase()}">Mi Perfil</h2>
+        <span th:text="${'Creado el ' + #temporals.format(board.createdAt, 'dd/MM/yyyy')}">
+            Creado el 01/01/2024
+        </span>
+    </div>
+
+    <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <div class="board-stats">
+        <div class="stat-card">
+            <div class="stat-number" th:text="${categoryCount}">0</div>
+            <div class="stat-label">Categorías</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number" th:text="${taskCount}">0</div>
+            <div class="stat-label">Tareas</div>
+        </div>
+    </div>
+
+    <form th:action="@{/boards/{id}/update(id=${board.id})}" method="POST" class="board-form">
+        <div class="form-group">
+            <label for="name">Nombre</label>
+            <input type="text" id="name" name="newName"
+                   th:value="${board.name}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Descripción</label>
+            <textarea id="description" name="newDescription" th:text="${board.description}"></textarea>
+        </div>
+
+        <div class="button-group">
+            <button type="submit" class="button primary-button">
+                Guardar cambios
+            </button>
+            <a th:href="@{/boards/{id}/delete(id=${board.id})}" class="button-delete">Eliminar</a>
+        </div>
+    </form>
+
+</main>
+</body>
+</html>
